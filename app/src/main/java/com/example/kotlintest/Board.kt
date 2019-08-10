@@ -4,18 +4,18 @@ import android.util.Log
 import androidx.lifecycle.ViewModelProviders
 
 class Board {
-    val numOfBombs : Int
-    private val xDimention : Int
-    private val yDimention : Int
-    val board = ArrayList<ArrayList<Int>>()
+    private val numOfBombs : Int
+    private val xDimension : Int
+    private val yDimension : Int
+    private val board = ArrayList<ArrayList<Int>>()
     val status = ArrayList<ArrayList<Boolean>>()
     var gameOver = false
-    val statusViewModel : StatusViewModel
+    private val statusViewModel : StatusViewModel
 
     constructor(xDim : Int, yDim: Int, numBombs : Int, activity: MainActivity)  {
         numOfBombs = numBombs
-        xDimention = xDim
-        yDimention = yDim
+        xDimension = xDim
+        yDimension = yDim
         statusViewModel = ViewModelProviders.of(activity).get(StatusViewModel::class.java)
 
         for(i in 0 until xDim){
@@ -39,13 +39,13 @@ class Board {
             count++
         }
 
-        var xIterator :Int = 0
+        var xIterator  = 0
         var yIterator :Int
 
         while(xIterator < xDim){
-            yIterator = 0;
+            yIterator = 0
             while(yIterator < yDim){
-                var countBombs :Int = 0;
+                var countBombs = 0
                 if(board[xIterator][yIterator] != -1){
                     when (xIterator){
                         0 -> {		//Left column
@@ -58,7 +58,7 @@ class Board {
                             countBombs += if(board[xIterator + 1][yIterator] == -1) 1 else 0
                             countBombs += if(board[xIterator -1][yIterator] == -1) 1 else 0
                         }
-                    };
+                    }
                     when (yIterator){
                         0 -> {			//Top row
                             countBombs += if(board[xIterator][yIterator+1] == -1) 1 else 0
@@ -88,7 +88,7 @@ class Board {
                             countBombs += if(board[xIterator+1][yIterator+1] == -1) 1 else 0
                         }
                     }
-                    board[xIterator][yIterator] = countBombs;
+                    board[xIterator][yIterator] = countBombs
                 }
                 yIterator++
             }
@@ -113,11 +113,11 @@ class Board {
     }
 
     fun getX() : Int{
-        return xDimention
+        return xDimension
     }
 
     fun getY() : Int{
-        return yDimention
+        return yDimension
     }
 
     fun getValue(x: Int, y: Int) : Int{

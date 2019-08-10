@@ -11,7 +11,4 @@ class StatusViewModel : ViewModel() {
         MutableLiveData<Boolean>()
     }
 
-    fun <T> MutableLiveData<T>.notifyObserver() {
-        this.value = this.value
-    }
 }

@@ -10,12 +10,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
 class GameButton: Button {
-    val xVal : Int
-    val yVal : Int
-    var clicked = false
-    var flagged = false
-    var gameValue : Int
-    val mineSweeper : MineSweeper
+    private val xVal : Int
+    private val yVal : Int
+    private var clicked = false
+    private var flagged = false
+    private var gameValue : Int
+    private val mineSweeper : MineSweeper
     private var statusVM : StatusViewModel
 
     constructor(context: Context, xVal : Int, yVal : Int, value: Int, mineSweeper: MineSweeper, activity: MainActivity) : super(context){
@@ -34,42 +34,58 @@ class GameButton: Button {
         this.setPadding(0,0,0,0)
 
         statusVM = ViewModelProviders.of(activity).get(StatusViewModel::class.java)
-        statusVM.gameOver.observe(activity, Observer<Boolean>{ newStatus ->
-            if(newStatus){
-                this.text = if(gameValue ==-1) {
-                    this.setBackgroundColor(Color.RED)
-                    "*"
-                } else  "$gameValue"
+        statusVM.gameOver.observe(activity, Observer<Boolean>{ gameOver ->
+            if(gameOver){
+                this.text = when (gameValue) {
+                    -1 -> {
+                        this.setBackgroundColor(Color.RED)
+                        "*"
+                    }
+                    0 -> " "
+                    else -> "$gameValue"
+                }
             }else{
                 this.background = shapeDrawable
                 this.text = " "
                 this.gameValue = mineSweeper.board.getValue(xVal,yVal)
+                this.clicked = false
+                this.flagged = false
             }
         })
 
         statusVM.statusChanged.observe(activity, Observer {
-            if(mineSweeper.board.status[xVal][yVal]){
-                this.text = if(gameValue == -1) {
-                    "A"
-                }else{
-                    "$gameValue"
+            if(!clicked) {
+                if (mineSweeper.board.status[xVal][yVal]) {
+                    this.text = if (gameValue == -1) {
+                        "A"
+                    } else {
+                        if(gameValue == 0){
+                            this.setBackgroundColor(activity.getColor(R.color.zero_button))
+                            " "
+                        }else{
+                            "$gameValue"
+                        }
+                    }
+                    clicked = true
                 }
-                clicked = true
             }
         })
 
         this.setOnClickListener{
-            if(!flagged){
+            if(!flagged) {
                 mineSweeper.open(xVal, yVal)
-                this.text = if(gameValue == -1) {
+                this.text = if (gameValue == -1) {
                     this.setBackgroundColor(Color.RED)
                     "*"
-                }else{
-                    "$gameValue"
+                } else {
+                    if(gameValue == 0){
+                        this.setBackgroundColor(activity.getColor(R.color.zero_button))
+                        " "
+                    }else{
+                        "$gameValue"
+                    }
                 }
                 clicked = true
-            }else{
-                flagged = !flagged
             }
         }
 

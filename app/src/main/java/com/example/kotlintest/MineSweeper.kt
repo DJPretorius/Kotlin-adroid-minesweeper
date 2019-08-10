@@ -22,55 +22,56 @@ class MineSweeper {
     }
 
     fun open(xDim: Int, yDim: Int) : Int{
-        val played = board.open(xDim, yDim)
-        if(played == 0) {
-            when (xDim) {
-                0 -> {        //Left column
-                    board.open(xDim+1, yDim)
+        if(!board.status[xDim][yDim]) {
+            val played = board.open(xDim, yDim)
+            if (played == 0) {
+                when (xDim) {
+                    0 -> {        //Left column
+                        this.open(xDim + 1, yDim)
+                    }
+                    xDimension - 1 -> {        //Right column
+                        this.open(xDim - 1, yDim)
+                    }
+                    else -> {
+                        this.open(xDim + 1, yDim)
+                        this.open(xDim - 1, yDim)
+                    }
                 }
-                xDimension - 1 -> {        //Right column
-                    board.open(xDim-1, yDim)
-                }
-                else -> {
-                    board.open(xDim + 1,yDim)
-                    board.open(xDim - 1,yDim)
-                }
-            }
-            when (yDim) {
-                0 -> {            //Top row
-                    board.open(xDim, yDim+1)
+                when (yDim) {
+                    0 -> {            //Top row
+                        this.open(xDim, yDim + 1)
 
+                    }
+                    yDimension - 1 -> {        //Bottom row
+                        this.open(xDim, yDim - 1)
+                    }
+                    else -> {
+                        this.open(xDim, yDim - 1)
+                        this.open(xDim, yDim + 1)
+                    }
                 }
-                yDimension - 1 -> {        //Bottom row
-                    board.open(xDim, yDim-1)
+                if (yDim > 0) {
+                    if (xDim != 0) { //Top Left
+                        this.open(xDim - 1, yDim - 1)
+                    }
+                    if (xDim != xDimension - 1) { //Top Right
+                        this.open(xDim + 1, yDim - 1)
+                    }
                 }
-                else -> {
-                    board.open(xDim, yDim-1)
-                    board.open(xDim, yDim+1)
+                if (yDim < yDimension - 1) {
+                    if (xDim != 0) {
+                        this.open(xDim - 1, yDim + 1)
+                    }
+                    if (xDim != xDimension - 1) {
+                        this.open(xDim + 1, yDim + 1)
+                    }
                 }
+            } else if (board.isGameOver()) {
+                statusViewModel.gameOver.value = true
             }
-            if (yDim > 0) {
-                if (xDim != 0) { //Top Left
-                    board.open(xDim-1, yDim-1)
-                }
-                if (xDim != xDimension - 1) { //Top Right
-                    board.open(xDim+1, yDim-1)
-                }
-            }
-            if (yDim < yDimension - 1) {
-                if (xDim != 0) {
-                    board.open(xDim-1, yDim+1)
-                }
-                if (xDim != xDimension - 1) {
-                    board.open(xDim+1, yDim+1)
-                }
-            }
+            return played
         }
-
-        if(board.isGameOver()){
-            statusViewModel.gameOver.value =true
-        }
-        return played
+        return -999
     }
 
     fun mark(xDim: Int, yDim: Int){

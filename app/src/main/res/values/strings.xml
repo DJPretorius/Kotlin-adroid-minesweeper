@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KotlinTest</string>
+    <string name="app_name">Minesweeper</string>
     <string name="button_text">Press Me</string>
     <string name="test">Hallo</string>
     <string name="reset_button">Reset</string>

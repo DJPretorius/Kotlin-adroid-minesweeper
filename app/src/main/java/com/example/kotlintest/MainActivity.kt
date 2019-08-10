@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
     private fun showDialog(){
         val edtX = EditText(this)
         edtX.inputType = InputType.TYPE_CLASS_NUMBER
+        edtX.setText("8")
         val linLayX = LinearLayout(this)
         linLayX.orientation = LinearLayout.HORIZONTAL
         linLayX.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT )
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
         val edtY = EditText(this)
         edtY.inputType = InputType.TYPE_CLASS_NUMBER
+        edtY.setText("8")
         val linLayY = LinearLayout(this)
         linLayY.orientation = LinearLayout.HORIZONTAL
         linLayY.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT )
