@@ -3,4 +3,7 @@
     <string name="button_text">Press Me</string>
     <string name="test">Hallo</string>
     <string name="reset_button">Reset</string>
+    <string name="dialog_text">Enter dimensions</string>
+    <string name="linlayX_title">X-dimension</string>
+    <string name="yLinLay_title">Y-Dimension</string>
 </resources>

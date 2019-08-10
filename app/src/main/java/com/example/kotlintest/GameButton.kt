@@ -34,7 +34,7 @@ class GameButton: Button {
         this.setPadding(0,0,0,0)
 
         statusVM = ViewModelProviders.of(activity).get(StatusViewModel::class.java)
-        statusVM.stateLD.observe(activity, Observer<Boolean>{ newStatus ->
+        statusVM.gameOver.observe(activity, Observer<Boolean>{ newStatus ->
             if(newStatus){
                 this.text = if(gameValue ==-1) {
                     this.setBackgroundColor(Color.RED)
@@ -47,9 +47,20 @@ class GameButton: Button {
             }
         })
 
+        statusVM.statusChanged.observe(activity, Observer {
+            if(mineSweeper.board.status[xVal][yVal]){
+                this.text = if(gameValue == -1) {
+                    "A"
+                }else{
+                    "$gameValue"
+                }
+                clicked = true
+            }
+        })
+
         this.setOnClickListener{
             if(!flagged){
-                mineSweeper.play(xVal, yVal)
+                mineSweeper.open(xVal, yVal)
                 this.text = if(gameValue == -1) {
                     this.setBackgroundColor(Color.RED)
                     "*"
@@ -63,21 +74,16 @@ class GameButton: Button {
         }
 
         this.setOnLongClickListener{
-            if(!clicked){
-                if(!flagged) {
+            if(!clicked) {
+                if (!flagged) {
                     this.text = "A"
-                }else{
+                } else {
                     this.text = " "
                 }
+                mineSweeper.mark(xVal, yVal)
                 flagged = !flagged
             }
             return@setOnLongClickListener  true
-        }
-    }
-
-    fun gameOver(){
-        if(mineSweeper.isGameOver()){
-
         }
     }
 
