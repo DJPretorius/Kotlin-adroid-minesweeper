@@ -1,6 +1,7 @@
 package com.example.kotlintest
 
 import android.util.Log
+import androidx.lifecycle.ViewModelProviders
 
 class Board {
     val numOfBombs : Int
@@ -9,11 +10,13 @@ class Board {
     val board = ArrayList<ArrayList<Int>>()
     val status = ArrayList<ArrayList<Boolean>>()
     var gameOver = false
+    val statusViewModel : StatusViewModel
 
-    constructor(xDim : Int, yDim: Int, numBombs : Int)  {
+    constructor(xDim : Int, yDim: Int, numBombs : Int, activity: MainActivity)  {
         numOfBombs = numBombs
         xDimention = xDim
         yDimention = yDim
+        statusViewModel = ViewModelProviders.of(activity).get(StatusViewModel::class.java)
 
         for(i in 0 until xDim){
             board.add(ArrayList())
@@ -93,15 +96,20 @@ class Board {
         }
     }
 
-    public fun printBoard(){
+    fun printBoard(){
         for(ar in board)
             Log.d("PRINT", ar.toString())
     }
 
-    fun play(x : Int, y : Int) : Int{
+    fun open(x : Int, y : Int) : Int{
         status[x][y] = !status[x][y]
+        statusViewModel.statusChanged.value = (statusViewModel.statusChanged.value) ?: false
         if(board[x][y] == -1) gameOver = true
         return board[x][y]
+    }
+
+    fun mark(x: Int, y: Int) {
+        status[x][y] = !status[x][y]
     }
 
     fun getX() : Int{
@@ -116,7 +124,7 @@ class Board {
         return board[x][y]
     }
 
-    fun getGameStatus() : Boolean{
+    fun isGameOver() : Boolean{
         if(gameOver) return true
         for(ar in status){
             for(done in ar){
